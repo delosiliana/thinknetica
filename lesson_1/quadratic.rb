@@ -26,16 +26,14 @@ puts "Введите третий коэффициент:"
 c= gets.to_f
 
 D = b ** 2 - (4 * a * c)
+sq = Math.sqrt(D)
 
 if D > 0
-
-  x1 = ( -b + Math.sqrt(D) / 2 * a).round(3)
-  x2 = ( b + Math.sqrt(D) / 2 * a).round(3)
-
+	 x1 = ( ( -b + sq ) / 2 * a).round(3)
+  	 x2 = ( ( b + sq ) / 2 * a).round(3)
 puts "Дискриминант = #{D}. Корень x1 = #{x1.to_f}. Корень x2 = #{x2.to_f}"
-  elsif D = 0
-   x = (-b / 2 * a).to_f
+  	elsif D = 0
+   	x = (-b / 2 * a).to_f
 puts "Дискриминант = #{D}. Корень x = #{x}"
- else
-  puts "Дискриминант = #{D}. Корней нет"
+ 	else puts "Дискриминант = #{D}. Корней нет"
 end
