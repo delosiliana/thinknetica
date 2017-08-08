@@ -15,7 +15,7 @@ height = gets.chomp.to_i
 weight = height - 110
 
 if weight <= 0
-	puts "Ваш вес идеальный"
+	puts "Вам нужно еще немного подрасти"
 else
-	puts "#{name.capitalize}, извините, Ваш вес не идеальный, у вас лишних #{weight}кг. "
+	puts "#{name.capitalize},  Ваш идеальный вес составляет :#{weight}кг. "
 end
