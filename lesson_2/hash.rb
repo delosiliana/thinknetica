@@ -7,7 +7,7 @@ def month
                           september: 30, october: 31, november: 30, december: 31}
 
   month_day.each do |month, day|
-  puts  month if day == 30
+    puts  month if day == 30
   end
 end
 
