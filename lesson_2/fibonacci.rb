@@ -3,14 +3,12 @@
 =end
 def fibonacci
   fib = [0, 1]
-  n = 1
-  while n < 100 do
-    n+=1
-    i = fib[n-2] + fib[n-1]
-    fib << i
+  until fib[-1] + fib[-2] > 100 do
+    fib<< fib[-1] + fib[-2]
   end
-  fib.delete_if {|i| i > 100}
+    p fib
 end
+
 
 p fibonacci
 
