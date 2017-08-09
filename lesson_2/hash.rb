@@ -8,10 +8,7 @@ def month
 
   month_day.each do |month, day|
   puts  month if day == 30
+  end
 end
 
 p month
-
-
-
-
