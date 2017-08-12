@@ -1,10 +1,12 @@
-Class Station
+class Station
+attr_accessor :train, :name, :station
 
-  def name_station            #названия станции
-
+  def initialize(name)            #названия станции
+    @name = name
+    @all_trains = []
   end
 
-  def taking_traind               #принимает поезда
+  def taking_trained               #принимает поезда
 
   end
 
@@ -15,10 +17,9 @@ Class Station
   def send_train                     #отправить поезд
 
   end
-
 end
 
-Class Route
+class Route
 
   def name_city                       #Имена городов отправления и прибытия
 
@@ -35,21 +36,34 @@ Class Route
   def list_city_station            #список всех станций
 
   end
-
 end
 
-Class Train
+class Train
+  attr_reader :number, :type, :carriages
 
-  def create_number_type           #создает номер, тип(пассажирский, грузовой),и количество вагонов
-
+  def initialize(opt ={})                                        #создает номер, тип(пассажирский, грузовой),и количество вагонов
+    @number = opts[:number]
+    @type = opts[:type]
+    @carriages = opts[:carriages].to_i
+    stop
   end
 
-  def speed                                   # может набирать скорость, возвращать текуюую, тормозить.
-
+  def increments_speed                                   # может набирать скорость, возвращать текуюую, тормозить.
+    @initial_speed +=10
   end
 
-  def list_the_car                          #показать количество вагонов, прицепить\отцепить(если поезд стоит)
+  def reset_speed
+    stop
+  end
 
+  def carriage(option)                #прицепить\отцепить(если поезд стоит)
+    reset_speed
+    @carriages +=1 if option == 'attach'
+    @carriages -=1 if option == 'unhook'
+  end
+
+  def list_the_car                          #показать количество вагонов
+    puts "Количество вагонов в поезде: #{carriages}"
   end
 
   def route_train                             #может принимать маршрут следования, при назначении автоматически находится на начальной станции
@@ -64,4 +78,9 @@ Class Train
 
   end
 
+  private
+
+  def stop
+    @initial_speed = 0
+  end
 end
