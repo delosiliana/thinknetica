@@ -27,20 +27,24 @@ class Station
 end
 
 class Route
-  def name_city
+  attr_accessor :stations
 
+  def initialize(first, last)  #создание маршрута начальная-конечная станция
+    @stations = [first, last]
   end
 
-  def add_intermediate
-
+  def add_intermediate(station)   #добавление станции в маршрут
+    stations.insert(-2, station)
+    puts "Станция (#{station}) добавлена в маршрут #{@number}."
   end
 
-  def delete_intermediate
-
+  def delete_intermediate(station)   #удаление станции из маршрута
+    stations.delete(station)
+    puts "Станция (#{station}) удалена из маршрута #{@number}."
   end
 
-  def list_city_station
-
+  def list_city_station  #вывод списка всех станции из маршрута
+    stations.each { |station| puts station.name }
   end
 end
 
