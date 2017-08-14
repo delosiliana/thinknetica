@@ -5,7 +5,7 @@ class Station
     @trains = []
   end
 
-  def arrived_train(train)  # принимает поезда
+  def add_train(train)  # принимает поезда
     @trains << train
     puts "На станцию #{name} прибывает поезд #{train}"
   end
@@ -15,7 +15,7 @@ class Station
   end
 
   def depart(train)  # отправить поезд
-    all_trains.delete(train)
+    trains.delete(train)
     puts " Поезд #{train} уходит со станции #{name} "
   end
  end
@@ -42,7 +42,7 @@ end
 
 class Train
   attr_reader :number, :type, :carriages
-  attr_accessor :route, :station
+  attr_accessor :route
 
   def initialize(number, type, carriages)   # создает номер, тип(пассажирский, грузовой),и количество вагонов
     @number = number
@@ -52,7 +52,7 @@ class Train
     puts "Создан поезд №#{number} состав: #{type}, c #{carriages} вагонами"
   end
 
-  def speed  # может набирать скорость, возвращать текуюую, тормозить.
+  def accelerate  # может набирать скорость, возвращать текуюую, тормозить.
     @initial_speed += 10
   end
 
@@ -60,7 +60,7 @@ class Train
     @initial_speed = 0
   end
 
-  def add_carriage   # прицепить\отцепить(если поезд стоит)
+  def add_carriage   # прицепить(если поезд стоит)
     stop
     @carriages += 1
     puts "Прицеплен вагон, на данный момент кол-во вагонов составляет #{carriages}"
@@ -68,13 +68,11 @@ class Train
 
   def remove_carriage  #отцепить(если поезд стоит)
     stop
-    @carriages -= 1
-    puts "Отцеплен вагон, на данный момент кол-во вагонов составляет #{carriages}"
+    unless @carriages <= 1
+      puts "Отцеплен вагон, на данный момент кол-во вагонов составляет #{@carriages -= 1}"
+    else puts "У вас всего 1 вагон, вам нечего отцеплять"
+    end
   end
-
-  #def list_the_car   # показать количество вагонов
-  #  puts "Количество вагонов в поезде: #{carriages}"
-  #end
 
   def route_train(route)
     @route = route
@@ -87,22 +85,22 @@ class Train
   end
 
   def move_previous
-    @st_index-= 1 if @st_index > 0
+    @st_index -= 1 if @st_index > 0
     puts "Вы прибыли на станцию #{@route.stations[@st_index]}"
   end
 
   def current_station
-    current= @route.stations[@st_index]
+    current = @route.stations[@st_index]
     puts "Сейчас вы находитесь на станции #{current}"
   end
 
   def next_station
-    @next_st=@route.stations[@st_index + 1]
+    @next_st = @route.stations[@st_index + 1]
     puts "Следующая станция по вашему маршруту #{@next_st}"
   end
 
   def previous_station
-    @pr_st=@route.stations[@st_index - 1] if @st_index > 0
+    @pr_st = @route.stations[@st_index - 1] if @st_index > 0
     puts "Предыдущая станция по вашему маршруту: #{@pr_st}"
   end
 end
@@ -122,10 +120,9 @@ t1.move_previous
 t1.current_station
 t1.next_station
 t1.previous_station
-#t1.list_the_car
-t1.add_carriage
-#t1.list_the_car
+t1.remove_carriage
+t1.remove_carriage
 t1.move_previous
 t1.current_station
-st1.arrived_train('t1')
+st1.add_train('t1')
 st1.trains
