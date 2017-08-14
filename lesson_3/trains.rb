@@ -1,18 +1,17 @@
 class Station
-  attr_accessor :train, :name, :station
+  attr_accessor :name
 
   def initialize(name)  # названия станции
-    @name = name
-    @all_trains = []
+    @trains = []
   end
 
-  def arrived(train)  # принимает поезда
-    @all_trains << train
+  def arrived_train(train)  # принимает поезда
+    @trains << train
     puts "На станцию #{name} прибывает поезд #{train}"
   end
 
-  def station_info   #список поездов
-    puts "Всего #{@all_trains.size} поездов на станции #{@name}"
+  def trains   #список поездов
+    puts "Всего #{@trains.size} поездов на станции #{@name}"
   end
 
   def depart(train)  # отправить поезд
@@ -34,7 +33,7 @@ class Route
   end
 
   def delete_station(station)    #удаление станции из маршрута
-    if station != @stations[0] && station != @stations[-1]
+    if station != @stations.first && station != @stations.last
       @stations.delete(station)
       puts "Станция (#{station}) удалена из маршрута #{@number}."
     end
@@ -47,31 +46,35 @@ class Train
 
   def initialize(number, type, carriages)   # создает номер, тип(пассажирский, грузовой),и количество вагонов
     @number = number
-    @type = type.to_s
+    @type = type.to_sym
     @carriages = carriages.to_i
-    reset_speed
+    stop
     puts "Создан поезд №#{number} состав: #{type}, c #{carriages} вагонами"
   end
 
-  def increments_speed  # может набирать скорость, возвращать текуюую, тормозить.
+  def speed  # может набирать скорость, возвращать текуюую, тормозить.
     @initial_speed += 10
   end
 
-  def reset_speed
+  def stop
     @initial_speed = 0
   end
 
-  def carriage(option)   # прицепить\отцепить(если поезд стоит)
-    reset_speed
-    @carriages += 1 if option == 'attach'
-    puts "Прицепить вагон" if option == 'attach'
-    @carriages -= 1 if option == 'unhook'
-    puts "Отцепить вагон" if option == 'unhook'
+  def add_carriage   # прицепить\отцепить(если поезд стоит)
+    stop
+    @carriages += 1
+    puts "Прицеплен вагон, на данный момент кол-во вагонов составляет #{carriages}"
   end
 
-  def list_the_car   # показать количество вагонов
-    puts "Количество вагонов в поезде: #{carriages}"
+  def remove_carriage  #отцепить(если поезд стоит)
+    stop
+    @carriages -= 1
+    puts "Отцеплен вагон, на данный момент кол-во вагонов составляет #{carriages}"
   end
+
+  #def list_the_car   # показать количество вагонов
+  #  puts "Количество вагонов в поезде: #{carriages}"
+  #end
 
   def route_train(route)
     @route = route
@@ -119,10 +122,10 @@ t1.move_previous
 t1.current_station
 t1.next_station
 t1.previous_station
-t1.list_the_car
-t1.carriage('attach')
-t1.list_the_car
+#t1.list_the_car
+t1.add_carriage
+#t1.list_the_car
 t1.move_previous
 t1.current_station
-st1.arrived('t1')
-st1.station_info
+st1.arrived_train('t1')
+st1.trains
