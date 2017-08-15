@@ -39,7 +39,7 @@ end
 
 class Train
   attr_reader :number, :type, :carriages
-  attr_accessor :number, :type, :carriages, :route
+  attr_accessor :route
 
   def initialize(opts = {})
     @carriages = opts[:carriages]
@@ -48,11 +48,11 @@ class Train
   end
 
   def accelerate  # может набирать скорость, возвращать текуюую, тормозить.
-    @initial_speed += 10
+    @speed += 10
   end
 
   def stop
-    @initial_speed = 0
+    @speed = 0
   end
 
   def add_carriage   # прицепить(если поезд стоит)
