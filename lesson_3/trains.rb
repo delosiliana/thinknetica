@@ -2,12 +2,12 @@ class Station
   attr_accessor :name, :trains
 
   def initialize(name)  # названия станции
+    @name = name
     @trains = []
   end
 
   def add_train(train)  # принимает поезда
     @trains << train
-    @trains.join(", ")
   end
 
   def by_type(type)
@@ -41,10 +41,10 @@ class Train
   attr_reader :number, :type, :carriages
   attr_accessor :route
 
-  def initialize(opts = {})
-    @carriages = opts[:carriages]
-    @number    = opts[:number]
-    @type      = opts[:type]
+  def initialize(number, type, carriages)
+    @number    = number
+    @type      = type
+    @carriages = carriages
   end
 
   def accelerate  # может набирать скорость, возвращать текуюую, тормозить.
