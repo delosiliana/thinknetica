@@ -14,7 +14,7 @@ class Station
     @trains.group_by(&:type).each { |key, value| print "#{key}: #{value.count} " if key == type }
   end
 
-  def depart(train)  # отправить поезд
+  def depart_train(train)  # отправить поезд
     trains.delete(train)
   end
 end
@@ -44,7 +44,7 @@ class Train
   def initialize(number, type, carriages)
     @number    = number
     @type      = type
-    @carriages = carriages
+    @carriages = carriages.to_i
   end
 
   def accelerate  # может набирать скорость, возвращать текуюую, тормозить.
@@ -66,55 +66,68 @@ class Train
   end
 
   def route_train(route)
+    @station_index = 0
     @route = route
-    @st_index = 0
   end
 
   def move_next
-    @st_index += 1 if @route.stations[@st_index + 1]
+    return if last_station?
+    current_station.depart_train(self)
+    @station_index += 1
+    current_station.add_train(self)
   end
 
   def move_previous
-    @st_index -= 1 if @st_index > 0
+    return if first_station?
+    current_station.depart_train(self)
+    @station_index -= 1 if @station_index > 0
+    current_station.add_train(self)
   end
 
   def current_station
-    current = @route.stations[@st_index]
+    @route.stations[@station_index]
   end
 
   def next_station
-    @next_st = @route.stations[@st_index + 1]
+    @route.stations[@station_index + 1]
   end
 
   def previous_station
-    @pr_st = @route.stations[@st_index - 1] if @st_index > 0
+    @route.stations[@station_index - 1] if @station_index > 0
+  end
+
+  private
+
+  def first_station?
+    current_station == @route.stations.first
+  end
+
+  def last_station?
+    current_station == @route.stations.last
   end
 end
 
-stans= Station.new('Moscow')
-one = Train.new(number: "91", type: "passenger", carriages: 15)
-two = Train.new(number: "24", type: "passenger", carriages: 38)
-three = Train.new(number: "16", type: "cargo", carriages: 21)
-route1 = Route.new('Moscow', 'Dnepr')
-route1.add_station('Tula')
-route1.add_station('Belgorod')
-route1.add_station('Harkov')
+one = Train.new(91, 'passenger',  '15')
+two = Train.new(24,'passenger',  '38')
+three = Train.new(16,  'cargo',  '21')
+route1 = Route.new(Station.new('Moscow'), Station.new('Dnepr'))
+route1.add_station(Station.new('Tula'))
+route1.add_station(Station.new('Belgorod'))
+route1.add_station(Station.new('Harkov'))
 one.route_train(route1)
 one.current_station
-one.next_station
 one.move_next
+two.route_train(route1)
+two.move_next
+route1.stations[1].trains.size
 one.move_next
+route1.stations[2].trains.size
 one.move_previous
-one.current_station
-one.next_station
-one.previous_station
-one.remove_carriage
-one.remove_carriage
-one.move_previous
-one.current_station
-stans.add_train(one)
-stans.add_train(two)
-stans.add_train(three)
-stans.by_type('passenger')
-stans.by_type('cargo')
-stans.trains.size
+route1.stations[1].trains.size
+#one.next_station
+#one.remove_carriage
+#one.remove_carriage
+#one.move_previous
+#one.current_station
+#route1.stations[1].by_type('passenger')
+#route1.stations[1].by_type('cargo')
