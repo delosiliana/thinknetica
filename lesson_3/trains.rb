@@ -10,7 +10,7 @@ class Station
     @trains << train
   end
 
-  def by_type(type)
+  def trains_by_type(type)
     @trains.group_by(&:type).each { |key, value| print "#{key}: #{value.count} " if key == type }
   end
 
@@ -129,5 +129,5 @@ route1.stations[1].trains.size
 #one.remove_carriage
 #one.move_previous
 #one.current_station
-#route1.stations[1].by_type('passenger')
-#route1.stations[1].by_type('cargo')
+#route1.stations[1].trains_by_type('passenger')
+#route1.stations[1].trains_by_type('cargo')
