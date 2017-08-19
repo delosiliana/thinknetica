@@ -1,3 +1,6 @@
+require_relative './route'
+require_relative './station'
+
 class Train
   attr_reader :number, :type, :carriages
   attr_accessor :route
