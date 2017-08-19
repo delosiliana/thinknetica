@@ -1,6 +1,9 @@
 require_relative './lib/route'
 require_relative './lib/station'
 require_relative './lib/train'
+require_relative './lib/carriage'
+require_relative './lib/cargo'
+require_relative './lib/passenger'
 
 puts "________________________________________________________________"
 puts "|                                                              |"
@@ -21,37 +24,24 @@ puts "| 12 - Просмотреть список поездов на станц�
 puts "|______________________________________________________________|"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-p one = Train.new(91, 'passenger',  '15')
-two = Train.new(24,'passenger',  '38')
-three = Train.new(16,  'cargo',  '21')
-route1 = Route.new(Station.new('Moscow'), Station.new('Dnepr'))
-route1.add_station(Station.new('Tula'))
-route1.add_station(Station.new('Belgorod'))
-route1.add_station(Station.new('Harkov'))
-one.route_train(route1)
-one.current_station
-one.move_next
-two.route_train(route1)
-two.move_next
-route1.stations[1].trains.size
-one.move_next
-route1.stations[2].trains.size
-one.move_previous
-route1.stations[1].trains.size
+one = Train.new(91, passenger,  15)
+#one = passenger(91)
+one.add_carriage
+#two = Train.new(24,'passenger',  '38')
+#three = Train.new(16,  'cargo',  '21')
+# route1 = Route.new(Station.new('Moscow'), Station.new('Dnepr'))
+# route1.add_station(Station.new('Tula'))
+# route1.add_station(Station.new('Belgorod'))
+# route1.add_station(Station.new('Harkov'))
+# one.route_train(route1)
+#one.current_station
+#one.move_next
+#two.route_train(route1)
+#two.move_next
+#route1.stations[1].trains.size
+#one.move_next
+#one.move_previous
+#route1.stations[1].trains.size
 #one.next_station
 #one.remove_carriage
 #one.remove_carriage

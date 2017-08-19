@@ -1,14 +1,14 @@
 require_relative './route'
 require_relative './station'
+require_relative './carriage'
 
 class Train
-  attr_reader :number, :type, :carriages
-  attr_accessor :route
+  attr_accessor :route, :number, :carriages, :type
 
-  def initialize(number, type, carriages)
+  def initialize(number, type, carriages=[] )
     @number    = number
     @type      = type
-    @carriages = carriages.to_i
+    @carriages = carriages
   end
 
   def accelerate  # может набирать скорость, возвращать текуюую, тормозить.
@@ -21,12 +21,12 @@ class Train
 
   def add_carriage   # прицепить(если поезд стоит)
     stop
-    @carriages += 1
+    @carriages  << Carriage.new(self.class)
   end
 
   def remove_carriage  #отцепить(если поезд стоит)
     stop
-    @carriages -= 1 if @carriages > 0
+    @carriages.pop || "No more carriages"
   end
 
   def route_train(route)
