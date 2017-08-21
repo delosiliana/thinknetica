@@ -6,9 +6,9 @@ require_relative './lib/cargo'
 require_relative './lib/carriage'
 
 class Main
-  attr_reader :station, :trains, :route
+  attr_reader :stations, :trains
 
-    def initilize
+    def initialize
       @stations = []
       @trains = []
     end
@@ -37,6 +37,7 @@ class Main
 
       case input
         when 1
+          create_station
         when 2
         when 3
         when 4
@@ -54,6 +55,19 @@ class Main
         menu
       end
     end
+
+    private
+
+    attr_writer  :stations, :trains
+
+    def create_station
+      print "Введите название станции: "
+      name = gets.chomp.to_s
+      station = Station.new name
+      stations << station
+      puts "Станция #{name}  создана"
+    end
+
 
  #one = Train.new(91, 'passenger')
 #one = passenger(91)
@@ -80,3 +94,4 @@ class Main
 #one.current_station
 #route1.stations[1].trains_by_type('passenger')
 #route1.stations[1].trains_by_type('cargo')
+end
