@@ -39,19 +39,31 @@ class Main
         when 1
           create_station
         when 2
+          station_list
         when 3
+          trains_list
         when 4
+          create_train
         when 5
+          to_attach_carriage
         when 6
+          to_unhook_сarriage
         when 7
+          create_route
         when 8
+          add_station_route
         when 9
+          delete_station_route
         when 10
+          to_appoint_route
         when 11
+          move_forward
         when 12
+          move_back
         when 00
+          abort
         else
-          puts "Вы ввели неправильное значение команды"
+          puts "Вы ввели неправильное значение команды, ознакомьтесь еще раз со списком комманд"
         menu
       end
     end
@@ -66,7 +78,70 @@ class Main
       station = Station.new name
       stations << station
       puts "Станция #{name}  создана"
+      menu
     end
+
+    def station_list
+      stations.each { |station| puts station.name } || "Станций пока не существует"
+      menu
+    end
+
+    def trains_list
+    end
+
+    def create_train
+      puts "Выберите какой поезд вы хотите создать?"
+      puts "1 - пассажирский"
+      puts "2 - грузовой"
+      puts "0 - выход в меню"
+      input = gets.chomp.to_i
+
+      case input
+      when 1
+        print "Для создания пассажирского поезда, введите номер поезда "
+      when 2
+        print "Для создания грузового поезда, введите номер поезда"
+      when 0
+        menu
+      else
+        puts "Вы ввели неправильные данные"
+       end
+       menu
+    end
+
+    def to_attach_carriage
+      menu
+    end
+
+    def to_unhook_сarriage
+      menu
+    end
+
+    def create_route
+      menu
+    end
+
+    def add_station_route
+      menu
+    end
+
+    def delete_station_route
+      menu
+    end
+
+    def to_appoint_route
+      menu
+    end
+
+    def move_forward
+      menu
+    end
+
+    def move_back
+      menu
+    end
+
+
 
 
  #one = Train.new(91, 'passenger')
