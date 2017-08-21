@@ -5,10 +5,10 @@ require_relative './carriage'
 class Train
   attr_accessor :route, :number, :carriages, :type
 
-  def initialize(number, type, carriages=[] )
+  def initialize(number, type)
     @number    = number
     @type      = type
-    @carriages = carriages
+    @carriages = []
   end
 
   def accelerate  # может набирать скорость, возвращать текуюую, тормозить.
