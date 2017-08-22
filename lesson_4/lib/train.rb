@@ -3,7 +3,7 @@ require_relative './station'
 require_relative './carriage'
 
 class Train
-  attr_accessor :route, :number, :carriages,
+  attr_accessor :route, :number, :carriages
 
   def initialize(number)
     @number    = number
@@ -11,12 +11,12 @@ class Train
     stop
   end
 
-  def self.create_passenger(number, carriage_count)
-    Passenger.new(number, carriage_count)
+  def self.create_passenger(number)
+    Passenger.new(number)
   end
 
-  def self.create_cargo(number, carriage_count)
-    Cargo.new(number, carriage_count)
+  def self.create_cargo(number)
+    Cargo.new(number)
   end
 
   def accelerate  # может набирать скорость, возвращать текуюую, тормозить.

@@ -2,7 +2,7 @@ require_relative './train'
 require_relative './station'
 
 class Route
-  attr_reader :stations
+  attr_accessor :stations
 
   def initialize(first, last)   #создание маршрута начальная-конечная станция
     @stations = [first, last]

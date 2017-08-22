@@ -6,11 +6,12 @@ require_relative './lib/cargo'
 require_relative './lib/carriage'
 
 class Main
-  attr_reader :stations, :trains
+  attr_accessor :station, :trains, :train, :route, :stations, :number
 
     def initialize
       @stations = []
       @trains = []
+      @routes = []
     end
 
     def menu
@@ -32,7 +33,7 @@ class Main
       puts "| 12 - Переместить поезд по маршруту назад                     |"
       puts "| 00 - Выход из меню                                           |"
       puts "|______________________________________________________________|"
-      print "Вы выбираете:"
+      puts"Вы выбираете:"
       input = gets.chomp.to_i
 
       case input
@@ -70,10 +71,8 @@ class Main
 
     private
 
-    attr_writer  :stations, :trains
-
     def create_station
-      print "Введите название станции: "
+      puts "Введите название станции: "
       name = gets.chomp.to_s
       station = Station.new name
       stations << station
@@ -87,6 +86,13 @@ class Main
     end
 
     def trains_list
+      @trains.each_key do |train|
+      @stations.each do |station|
+        if station.name == train.current_station
+          puts "На станции: #{station.name} поезда: #{train.number}"
+        end
+      end
+    end
     end
 
     def create_train
@@ -98,9 +104,17 @@ class Main
 
       case input
       when 1
-        print "Для создания пассажирского поезда, введите номер поезда "
+        puts "Для создания пассажирского поезда, введите номер поезда "
+        number = gets.chomp.to_i
+        @train = Passenger.new(number)
+        @trains << train
+        puts "Поезд номер #{number} создан"
       when 2
-        print "Для создания грузового поезда, введите номер поезда"
+        puts "Для создания грузового поезда, введите номер поезда"
+        number = gets.chomp.to_i
+        @train = Cargo.new(number)
+        @trains << train
+        puts "Поезд номер #{number} создан"
       when 0
         menu
       else
@@ -109,64 +123,77 @@ class Main
        menu
     end
 
+    def invalid_number
+      puts "Некорректный номер"
+    end
+
+    def selected_train
+      number = gets.chomp.to_i
+      @trains = self.trains.select{ |train| @train.number == number }
+      return invalid_number  unless @trains.include? @train
+      @trains.find { |train| train == @train }
+    end
+
     def to_attach_carriage
+      puts "Выберите поезд(по номеру) к которому хотите прицепить вагон:"
+      selected_train.add_carriage
+      puts "К поезду #{@train.number} успешно прицеплен вагон"
+      puts "У поезда #{@train.number} теперь кол-во вагонов составляет - #{@train.carriages.size} "
       menu
     end
 
     def to_unhook_сarriage
+      puts "Выберите поезд(по номеру) от которого хотите отцепить вагон:"
+      selected_train.remove_carriage
+      puts "От поезда #{@train.number} успешно отцеплен вагон"
+      puts "У поезда #{@train.number} теперь кол-во вагонов составляет - #{@train.carriages.size} "
       menu
     end
 
     def create_route
+      puts 'Введите начальную станцию маршрута:'
+      first = gets.chomp
+      puts 'Введите конечную станцию маршрута:'
+      last = gets.chomp
+      @route = Route.new(first, last)
+      puts "Маршрут #{first} - #{last} создан"
       menu
     end
 
     def add_station_route
+      puts "Введите название станции, которую хотите добавить"
+      station = gets.chomp
+      @route.add_station(station)
+      puts "Станция добавлена, маршрут сейчас #{route.stations}"
       menu
     end
 
     def delete_station_route
+      puts "Введите название станции, которую хотите удалить"
+      station = gets.chomp
+      @route.delete_station(station)
+      puts "Станция #{station} удалена из маршрута, маршрут сейчас #{route.stations}"
       menu
     end
 
     def to_appoint_route
+      puts "Введите номер поезда, к которому хотите присвоить маршрут"
+      selected_train.route_train(route)
+      puts "У поезда #{train.number} сейчас маршрут #{route.stations}"
       menu
     end
 
     def move_forward
+      puts "Введите номер поезда, который хотите отправить вперед"
+      selected_train.move_next
+      puts "Поезд #{train.number} уходит со  станции #{@train.current_station}"
       menu
     end
 
     def move_back
+      puts "Введите номер поезда, который хотите отправить вперед"
+      selected_train.move_previous
+      puts "Поезд #{train.number} уходит со  станции #{@train.current_station}"
       menu
     end
-
-
-
-
- #one = Train.new(91, 'passenger')
-#one = passenger(91)
-# one.add_carriage
-#two = Train.new(24,'passenger',  '38')
-#three = Train.new(16,  'cargo',  '21')
-# route1 = Route.new(Station.new('Moscow'), Station.new('Dnepr'))
-# route1.add_station(Station.new('Tula'))
-# route1.add_station(Station.new('Belgorod'))
-# route1.add_station(Station.new('Harkov'))
-# one.route_train(route1)
-#one.current_station
-#one.move_next
-#two.route_train(route1)
-#two.move_next
-#route1.stations[1].trains.size
-#one.move_next
-#one.move_previous
-#route1.stations[1].trains.size
-#one.next_station
-#one.remove_carriage
-#one.remove_carriage
-#one.move_previous
-#one.current_station
-#route1.stations[1].trains_by_type('passenger')
-#route1.stations[1].trains_by_type('cargo')
 end
