@@ -10,7 +10,7 @@ class Station
   end
 
   def add_train(train)  # принимает поезда
-    @trains << train
+    @trains << train(number)
   end
 
   def trains_by_type(type)
@@ -18,6 +18,6 @@ class Station
   end
 
   def depart_train(train)  # отправить поезд
-    trains.delete(train)
+    @trains.delete(train)
   end
 end

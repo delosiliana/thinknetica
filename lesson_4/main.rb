@@ -130,7 +130,7 @@ class Main
 
     def selected_train
       number = gets.chomp.to_i
-      @trains = self.trains.select{ |train| @train.number == number }
+      @train = self.trains.select{ |train| @train.number == number }
       return invalid_number  unless @trains.include? @train
       @trains.find { |train| train == @train }
     end
@@ -177,7 +177,6 @@ class Main
       last = station
       #@stations.find { |station| last == @station }
       @route = Route.new(first, last)
-      @routes << route
       puts "Маршрут #{route.stations} создан"
       menu
     end
