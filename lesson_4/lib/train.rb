@@ -1,7 +1,3 @@
-require_relative './route'
-require_relative './station'
-require_relative './carriage'
-
 class Train
   attr_accessor :route, :number, :carriages
 

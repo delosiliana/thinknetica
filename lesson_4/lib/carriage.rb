@@ -1,5 +1,5 @@
-require_relative './train'
-
 class Carriage
-    def initialize(type); @type = type; end
+  attr_reader :type
+
+  def initialize(type); @type = type; end
 end
