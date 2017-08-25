@@ -73,7 +73,7 @@ class Main
 
     def create_station
       puts "Введите название станции: "
-      name = gets.chomp
+      name = gets.chomp.capitalize
       @station = Station.new(name)
       @stations << station
       puts "Станция #{name}  создана"
@@ -85,13 +85,13 @@ class Main
     end
 
     def trains_list
-      @trains.each do |train|
-      @stations.each do |station|
-        if station.name == train.current_station
-          puts "На станции: #{station.name} поезда: #{train.number}"
-        end
-      end
-    end
+      station_list
+      puts "Выберите станцию на которой хотите посмотреть поезда:"
+      input = gets.chomp.capitalize
+      index = @stations.find_index { |station|  station.name == input }
+      current_station = @stations[index]
+      puts "На станции #{current_station.name} сейчас находится #{current_station.trains.size} поездов"
+      menu
     end
 
     def create_train
@@ -130,9 +130,8 @@ class Main
 
     def selected_train
       number = gets.chomp.to_i
-      @train = self.trains.select{ |train| @train.number == number }
-      return invalid_number  unless @trains.include? @train
-      @trains.find { |train| train == @train }
+      index = @trains.find_index { |train| train.number == number }
+      index.nil? ? invalid_number && menu : @train = @trains[index]
     end
 
     def invalid_name
@@ -155,39 +154,29 @@ class Main
       menu
     end
 
-    #  def selected_station
-    #    station = gets.chomp.to_s
-    #    @stations = self.stations.select { |station| station == station }
-    #    return invalid_name unless @stations.include? @station
-    #    @stations.find { |station| station == @station }
-    #  end
-
     def create_route
       station_list
       puts "Выберете начальную станцию маршрута из списка:"
-      station = gets.chomp
-      @stations = stations.select { |station| station == station }
-      #@stations.find_index { |station| first == @station }
-      @stations.find{ |station| @stations == station}
-      first = station
+      input = gets.chomp.capitalize
+      index = @stations.find_index { |station|  station.name == input }
+      first = @stations[index]
       puts "Выберите конечную станцию маршрута из списка:"
-      station = gets.chomp
-      @stations = stations.select { |station| station == station }
-      @stations.find{ |station| @stations == station}
-      last = station
-      #@stations.find { |station| last == @station }
+      input = gets.chomp.capitalize
+      index = @stations.find_index { |station|  station.name == input }
+      last = @stations[index]
       @route = Route.new(first, last)
       puts "Маршрут #{route.stations} создан"
+      @routes << @route
       menu
     end
 
     def add_station_route
       station_list
       puts "Выберите название станции, которую хотите добавить"
-      station = gets.chomp
-      @stations = stations.select { |station| station == station }
-      @stations.find{ |station|  @station == station}
-      @route.add_station(self)
+      input = gets.chomp.capitalize
+      index = @stations.find_index { |station|  station.name == input }
+      station = @stations[index]
+      @route.add_station(station)
       puts "Станция #{station} в маршрут #{route.stations} добавлена "
       menu
     end
@@ -195,7 +184,9 @@ class Main
     def delete_station_route
       station_list
       puts "Введите название станции, которую хотите удалить"
-      station = gets.chomp
+      input = gets.chomp.capitalize
+      index = @stations.find_index { |station|  station.name == input }
+      station = @stations[index]
       @route.delete_station(station)
       puts "Станция #{@station} удалена из маршрута #{route.stations}"
       menu
@@ -211,14 +202,14 @@ class Main
     def move_forward
       puts "Введите номер поезда, который хотите отправить вперед"
       selected_train.move_next
-      puts "Поезд #{train.number} прибыл на станцию #{@train.current_station}"
+      puts "Поезд #{train.number} прибыл на станцию #{@train.current_station.name}"
       menu
     end
 
     def move_back
       puts "Введите номер поезда, который хотите отправить назад"
       selected_train.move_previous
-      puts "Поезд #{train.number} прибыл на станцию #{@train.current_station}"
+      puts "Поезд #{train.number} прибыл на станцию #{@train.current_station.name}"
       menu
     end
 end
