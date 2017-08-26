@@ -66,8 +66,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
         move_back
       when 00
         abort
-      else
-        puts "Вы ввели неправильное значение команды, ознакомьтесь еще раз со списком комманд"
+      else puts "Вы ввели неправильное значение команды, ознакомьтесь еще раз со списком комманд"
       menu
     end
   end
@@ -122,7 +121,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
     when 0
       menu
     else puts "Вы ввели неправильные данные"
-     menu
+    menu
     end
   end
 
