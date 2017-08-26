@@ -1,4 +1,4 @@
-class Carriage_passenger < Carriage
+class CarriagePassenger < Carriage
   def initialize
     super(:passenger)
   end

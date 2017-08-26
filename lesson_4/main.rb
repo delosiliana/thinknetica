@@ -156,11 +156,11 @@ attr_accessor :station, :trains, :train, :route, :stations,
 
     case input
     when 1
-      @carriage = Carriage_passenger.new
+      @carriage = CarriagePassenger.new
     when 2
-      @carriage = Carriage_cargo.new
+      @carriage = CarriageCargo.new
     else puts "Вы ввели неправильный тип вагона"
-      return
+    menu
     end
   end
 
