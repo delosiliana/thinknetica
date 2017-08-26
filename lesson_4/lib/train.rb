@@ -1,5 +1,5 @@
 class Train
-  attr_accessor :route, :number, :carriages
+  attr_accessor :route, :number, :carriages, :type
 
   def initialize(number)
     @number    = number
@@ -23,9 +23,9 @@ class Train
     @speed = 0
   end
 
-  def add_carriage   # прицепить(если поезд стоит)
+  def add_carriage(carriage)   # прицепить(если поезд стоит)
     stop
-    @carriages  << Carriage.new(self.class)
+    @carriages << carriage
   end
 
   def remove_carriage  #отцепить(если поезд стоит)

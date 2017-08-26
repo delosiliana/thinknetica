@@ -4,9 +4,12 @@ require_relative './lib/train'
 require_relative './lib/passenger'
 require_relative './lib/cargo'
 require_relative './lib/carriage'
+require_relative './lib/carriage_cargo'
+require_relative './lib/carriage_passenger'
 
 class Main
-  attr_accessor :station, :trains, :train, :route, :stations, :number, :name
+attr_accessor :station, :trains, :train, :route, :stations,
+              :number, :name, :carriage
 
   def initialize
     @stations = []
@@ -138,17 +141,33 @@ class Main
   end
 
   def to_attach_carriage
+    menu_carriage
     puts "Выберите поезд(по номеру) к которому хотите прицепить вагон:"
-    selected_train.add_carriage
-    puts "К поезду #{@train.number} успешно прицеплен вагон"
+    selected_train.add_carriage(carriage)
+    puts "К поезду #{@train.number} успешно прицеплен вагон типа #{@carriage.type}"
     puts "У поезда #{@train.number} теперь кол-во вагонов составляет - #{@train.carriages.size}"
     menu
+  end
+
+  def menu_carriage
+    puts "Введите 1 если хотите добавить пассажирский вагон"
+    puts "Введите 2 если хотите добавить грузовой вагон"
+    input = gets.chomp.to_i
+
+    case input
+    when 1
+      @carriage = Carriage_passenger.new
+    when 2
+      @carriage = Carriage_cargo.new
+    else puts "Вы ввели неправильный тип вагона"
+      return
+    end
   end
 
   def to_unhook_сarriage
     puts "Выберите поезд(по номеру) от которого хотите отцепить вагон:"
     selected_train.remove_carriage
-    puts "От поезда #{@train.number} успешно отцеплен вагон"
+    puts "От поезда #{@train.number} успешно отцеплен вагон типа #{@carriage.type}"
     puts "У поезда #{@train.number} теперь кол-во вагонов составляет - #{@train.carriages.size} "
     menu
   end
