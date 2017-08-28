@@ -1,3 +1,4 @@
+require_relative './lib/manufacturer'
 require_relative './lib/route'
 require_relative './lib/station'
 require_relative './lib/train'
