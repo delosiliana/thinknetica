@@ -2,10 +2,10 @@ class Station
   attr_accessor :name, :trains
 
 #метод класса
-@@stations = []
+  @@stations = []
 
   def self.all
-    puts "Существуют на данный момент станции #{@@stations}"
+    @@stations
   end
 
   def initialize(name)  # названия станции
