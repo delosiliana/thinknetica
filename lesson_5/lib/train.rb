@@ -1,9 +1,21 @@
+require_relative './lib/instance_counter'
+require_relative './lib/manufacturer'
+
 class Train
+  include Manufacturer
+  include InstanceCounter
   attr_accessor :route, :number, :carriages, :type
+
+  @@trains = []
+
+  def self.find(number)
+    @@trains[number]
+  end
 
   def initialize(number)
     @number    = number
-    @carriages = [] #carriage_count.times.map { Carriage.new(self.class) }
+    @carriages = []
+    @@trains[number] = self
     stop
   end
 
