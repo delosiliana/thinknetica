@@ -111,13 +111,14 @@ attr_accessor :station, :trains, :train, :route, :stations,
       @train = Passenger.new(number)
       @trains << train
       puts "Поезд номер #{number} создан"
+      menu
     elsif input == 2
-    puts "Для создания грузового поезда, введите номер поезда"
-    number = gets.chomp
-    @train = Cargo.new(number)
-    @trains << train
-    puts "Поезд номер #{number} создан"
-    menu
+      puts "Для создания грузового поезда, введите номер поезда"
+      number = gets.chomp
+      @train = Cargo.new(number)
+      @trains << train
+      puts "Поезд номер #{number} создан"
+      menu
     end
     rescue RuntimeError => e
       puts e.message

@@ -9,7 +9,7 @@ class Train
 
   VALID_NUMBER = /^[0-9a-z]{3}-?[0-9a-z]{2}$/i
 
-  @@trains = []
+  @@trains = {}
 
   def self.find(number)
     @@trains[number]
@@ -83,7 +83,7 @@ class Train
   protected
 
   def validate!
-    raise "Номер неправильного формата" if @number.to_s !~ VALID_NUMBER
+    raise "Номер неправильного формата" if number.to_s !~ VALID_NUMBER
   end
 
   def first_station?
