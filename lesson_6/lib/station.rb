@@ -1,7 +1,7 @@
 class Station
   attr_accessor :name, :trains
 
-  include Validate
+  include Validation
 
 #метод класса
   @@stations = []
@@ -34,7 +34,7 @@ class Station
   def validate!
     raise "Такая станция уже существует!" if self.class.all.find{|s| s.name == name}
     raise "Название должно быть больше 3 символов" if name.length < 3
-    raise "Отсутствует название станции!" if name.to_s.empty?    
+    raise "Отсутствует название станции!" if name.to_s.empty?
   true
   end
 end

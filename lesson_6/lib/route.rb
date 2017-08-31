@@ -1,7 +1,7 @@
 class Route
   attr_accessor :stations
 
-  include Validate
+  include Validation
 
   def initialize (first, last)   #создание маршрута начальная-конечная станция
     @stations = [first, last]
