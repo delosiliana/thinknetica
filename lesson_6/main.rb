@@ -1,4 +1,5 @@
 require_relative './lib/manufacturer'
+require_relative './lib/validation'
 require_relative './lib/route'
 require_relative './lib/station'
 require_relative './lib/train'
@@ -104,27 +105,23 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "0 - выход в меню"
     input = gets.chomp.to_i
 
-    case input
-    when 1
+    if input == 1
       puts "Для создания пассажирского поезда, введите номер поезда "
-      number = gets.chomp.to_i
+      number = gets.chomp
       @train = Passenger.new(number)
       @trains << train
       puts "Поезд номер #{number} создан"
-      menu
-    when 2
-      puts "Для создания грузового поезда, введите номер поезда"
-      number = gets.chomp.to_i
-      @train = Cargo.new(number)
-      @trains << train
-      puts "Поезд номер #{number} создан"
-      menu
-    when 0
-      menu
-    else puts "Вы ввели неправильные данные"
+    elsif input == 2
+    puts "Для создания грузового поезда, введите номер поезда"
+    number = gets.chomp
+    @train = Cargo.new(number)
+    @trains << train
+    puts "Поезд номер #{number} создан"
     menu
     end
-  end
+    rescue RuntimeError => e
+      puts e.message
+    end
 
   def invalid_number
     puts "Некорректный номер"

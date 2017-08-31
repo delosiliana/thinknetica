@@ -1,8 +1,11 @@
 class Route
   attr_accessor :stations
 
+  include Validate
+
   def initialize (first, last)   #создание маршрута начальная-конечная станция
     @stations = [first, last]
+    validate!
   end
 
   def add_station(station)    #добавление станции в маршрут
@@ -13,5 +16,12 @@ class Route
     if station != @stations.first && station != @stations.last
       @stations.delete(station)
     end
+  end
+
+  protected
+
+  def validate!
+    raise "Станций не существует" if @stations[0].nil? || @stations[-1].nil?
+    true
   end
 end

@@ -1,10 +1,13 @@
-require_relative './lib/instance_counter'
-require_relative './lib/manufacturer'
+require_relative 'instance_counter'
+require_relative 'manufacturer'
 
 class Train
+  include Validation
   include Manufacturer
   include InstanceCounter
   attr_accessor :route, :number, :carriages, :type
+
+  VALID_NUMBER = /^[0-9a-z]{3}-?[0-9a-z]{2}$/i
 
   @@trains = []
 
@@ -13,8 +16,9 @@ class Train
   end
 
   def initialize(number)
-    @number    = number
+    @number = number
     @carriages = []
+    validate!
     @@trains[number] = self
     stop
   end
@@ -76,7 +80,11 @@ class Train
     @route.stations[@station_index - 1] if @station_index > 0
   end
 
-  private
+  protected
+
+  def validate!
+    raise "Номер неправильного формата" if @number.to_s !~ VALID_NUMBER
+  end
 
   def first_station?
     current_station == @route.stations.first
