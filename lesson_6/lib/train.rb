@@ -84,6 +84,7 @@ class Train
 
   def validate!
     raise "Номер неправильного формата" if number.to_s !~ VALID_NUMBER
+    true
   end
 
   def first_station?

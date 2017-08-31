@@ -11,7 +11,7 @@ require_relative './lib/carriage_passenger'
 
 class Main
 attr_accessor :station, :trains, :train, :route, :stations,
-                      :number, :name, :carriage
+                      :number, :name, :carriage, :type
 
   def initialize
     @stations = []
@@ -102,7 +102,6 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "Выберите какой поезд вы хотите создать?"
     puts "1 - пассажирский"
     puts "2 - грузовой"
-    puts "0 - выход в меню"
     input = gets.chomp.to_i
 
     if input == 1
@@ -110,19 +109,20 @@ attr_accessor :station, :trains, :train, :route, :stations,
       number = gets.chomp
       @train = Passenger.new(number)
       @trains << train
-      puts "Поезд номер #{number} создан"
+      puts "Поезд номер #{number}  пассажирского типа создан"
       menu
     elsif input == 2
       puts "Для создания грузового поезда, введите номер поезда"
       number = gets.chomp
       @train = Cargo.new(number)
       @trains << train
-      puts "Поезд номер #{number} создан"
+      puts "Поезд номер #{number} грузового типа создан"
       menu
     end
-    rescue RuntimeError => e
+      rescue RuntimeError => e
       puts e.message
-    end
+      menu
+  end
 
   def invalid_number
     puts "Некорректный номер"
