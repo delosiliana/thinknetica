@@ -1,5 +1,6 @@
 require_relative './lib/manufacturer'
 require_relative './lib/validation'
+require_relative './lib/instance_counter'
 require_relative './lib/route'
 require_relative './lib/station'
 require_relative './lib/train'
@@ -12,6 +13,8 @@ require_relative './lib/carriage_passenger'
 class Main
 attr_accessor :station, :trains, :train, :route, :stations,
                       :number, :name, :carriage, :type
+
+  include Validate
 
   def initialize
     @stations = []
@@ -82,6 +85,9 @@ attr_accessor :station, :trains, :train, :route, :stations,
     @stations << station
     puts "Станция #{name}  создана"
     menu
+  rescue RuntimeError => e
+    puts e.message
+    menu
   end
 
   def station_list
@@ -119,9 +125,9 @@ attr_accessor :station, :trains, :train, :route, :stations,
       puts "Поезд номер #{number} грузового типа создан"
       menu
     end
-      rescue RuntimeError => e
-      puts e.message
-      menu
+  rescue RuntimeError => e
+    puts e.message
+    menu
   end
 
   def invalid_number
@@ -145,6 +151,9 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "К поезду #{@train.number} успешно прицеплен вагон типа #{@carriage.type}"
     puts "У поезда #{@train.number} теперь кол-во вагонов составляет - #{@train.carriages.size}"
     menu
+  rescue RuntimeError, TypeError => e
+    puts e.message
+    retry
   end
 
   def menu_carriage
@@ -181,9 +190,12 @@ attr_accessor :station, :trains, :train, :route, :stations,
     index = @stations.find_index { |station|  station.name == input }
     last = @stations[index]
     @route = Route.new(first, last)
-    puts "Маршрут #{route.stations} создан"
     @routes << @route
+    puts "Маршрут #{route.stations} создан"
     menu
+  rescue RuntimeError, TypeError => e
+    puts e.message
+    retry
   end
 
   def add_station_route

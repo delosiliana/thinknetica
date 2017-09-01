@@ -2,12 +2,12 @@ require_relative 'instance_counter'
 require_relative 'manufacturer'
 
 class Train
-  include Validation
+  include Validate
   include Manufacturer
   include InstanceCounter
   attr_accessor :route, :number, :carriages, :type
 
-  VALID_NUMBER = /^[0-9a-z]{3}-?[0-9a-z]{2}$/i
+  VALID_NUMBER = /^[a-z\d]{3}-?[a-z\d]{2}$/i
 
   @@trains = {}
 
@@ -84,7 +84,6 @@ class Train
 
   def validate!
     raise "Номер неправильного формата" if number.to_s !~ VALID_NUMBER
-    true
   end
 
   def first_station?

@@ -1,20 +1,24 @@
 class Station
   attr_accessor :name, :trains
 
-  include Validation
+  include Validate
 
 #метод класса
   @@stations = []
+
+  def initialize(name)  # названия станции
+    @name = name.to_s
+    @trains = []
+    validate!
+    @@stations << self
+  end
 
   def self.all
     @@stations
   end
 
-  def initialize(name)  # названия станции
-    @name = name.to_s
-    validate!
-    @trains = []
-    @@stations << self
+  def find
+    self.class.all.find{|s| s.name == name}
   end
 
   def add_train(train)  # принимает поезда
@@ -32,8 +36,7 @@ class Station
   protected
 
   def validate!
-    raise "Такая станция уже существует!" if self.class.all.find{|s| s.name == name}
     raise "Название должно быть больше 3 символов" if name.length < 3
-  true
+    raise "Такая станция уже существует!" if find
   end
 end

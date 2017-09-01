@@ -1,7 +1,7 @@
 class Route
   attr_accessor :stations
 
-  include Validation
+  include Validate
 
   def initialize (first, last)   #создание маршрута начальная-конечная станция
     @stations = [first, last]
@@ -21,7 +21,6 @@ class Route
   protected
 
   def validate!
-    raise "Станций не существует" if @stations[0].nil? || @stations[-1].nil?
-    true
+    raise "Вы забыли выбрать станцию" if @stations.first.nil? && @stations.last.nil?
   end
 end
