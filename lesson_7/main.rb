@@ -240,4 +240,5 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "Поезд #{train.number} прибыл на станцию #{@train.current_station.name}"
     menu
   end
+
 end
