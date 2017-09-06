@@ -80,6 +80,12 @@ class Train
     @route.stations[@station_index - 1] if @station_index > 0
   end
 
+  def each_carriage
+    @carriages.each do |carriage|
+      yield(carriage)
+    end
+  end
+
   protected
 
   def validate!
