@@ -1,18 +1,27 @@
 class CarriagePassenger < Carriage
 
-  def initialize(number_seats)
-    @number_seats = number_seats.to_i
-    @busy_place = @number_seats
-    super(:passenger)
+  def initialize(seats)
+    @seats = seats.to_i
+    validate!
+    @occupied_place = @seats
   end
 
-  def free_seat
-    raise "Все места заняты" if @busy_place.zero?
-    @busy_place -= 1
+  def occupied_seat
+    raise "Все места заняты" if @occupied_place.zero?
+    @occupied_place -= 1
   end
 
-  def taken_places
-    @number_seats - @busy_place
+  def free_places
+    @seats - @occupied_place
   end
 
+  def puts_info
+    "тип #{self.class}, занято  мест - #{occupied_place}, свободных мест -#{free_places}"
+  end
+
+  protected
+
+  def validate!
+    raise "Количество мест не должно быть 0" if @seats < 1
+  end
 end
