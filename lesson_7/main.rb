@@ -135,7 +135,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
   end
 
   def selected_train
-    number = gets.chomp.to_i
+    number = gets.chomp
     index = @trains.find_index { |train| train.number == number }
     index.nil? ? invalid_number && menu : @train = @trains[index]
   end
@@ -147,7 +147,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
   def to_attach_carriage
     menu_carriage
     puts "Выберите поезд(по номеру) к которому хотите прицепить вагон:"
-    number.selected_train
+    selected_train.add_carriage(carriage)
     puts "К поезду #{@train.number} успешно прицеплен вагон типа #{@carriage.type}"
     puts "У поезда #{@train.number} теперь кол-во вагонов составляет - #{@train.carriages.size}"
     menu
@@ -160,7 +160,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "Выберите какой вагон вы хотите прицепить?"
     puts "1 - пассажирский"
     puts "2 - грузовой"
-    input.gets.chomp.to_i
+    input = gets.chomp.to_i
 
     case input
     when 1
@@ -175,21 +175,6 @@ attr_accessor :station, :trains, :train, :route, :stations,
     menu
     end
   end
-
-  #def menu_carriage
-  #  puts "Введите 1 если хотите добавить пассажирский вагон"
-  #  puts "Введите 2 если хотите добавить грузовой вагон"
-  #  input = gets.chomp.to_i
-  #
-  #  case input
-  #  when 1
-  #    @carriage = CarriagePassenger.new
-  #  when 2
-  #    @carriage = CarriageCargo.new
-  #  else puts "Вы ввели неправильный тип вагона"
-  #  menu
-  #  end
-  #end
 
   def to_unhook_сarriage
     puts "Выберите поезд(по номеру) от которого хотите отцепить вагон:"
