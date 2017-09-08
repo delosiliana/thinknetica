@@ -12,7 +12,7 @@ require_relative './lib/carriage_passenger'
 
 class Main
 attr_accessor :station, :trains, :train, :route, :stations,
-                      :number, :name, :carriage, :type, :carriages
+                      :number, :name, :carriage, :type, :carriages, :num
 
   include Validate
 
@@ -40,8 +40,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "| 10 - Назначить маршрут поезду                                |"
     puts "| 11 - Переместить поезд по маршруту вперед                    |"
     puts "| 12 - Переместить поезд по маршруту назад                     |"
-    puts "| 13 - Посмотреть данные о поезде                              |"
-    puts "| 14 - Занять место или объем в вагоне                         |"
+    puts "| 13 - Посмотреть данные о поезде                              |"    
     puts "| 00 - Выход из меню                                           |"
     puts "|______________________________________________________________|"
     puts"Вы выбираете:"
@@ -74,8 +73,6 @@ attr_accessor :station, :trains, :train, :route, :stations,
         move_back
       when 13
         info_train
-      when 14
-        occupy_carriage
       when 00
         abort
       else puts "Вы ввели неправильное значение команды, ознакомьтесь еще раз со списком комманд"
@@ -166,7 +163,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
     menu_carriage
     puts "Выберите поезд(по номеру) к которому хотите прицепить вагон:"
     selected_train.add_carriage(carriage)
-    puts "К поезду #{@train.number} успешно прицеплен вагон типа #{@carriage.class}"
+    puts "К поезду #{@train.number} успешно прицеплен вагон типа #{carriage.class}"
     puts "У поезда #{@train.number} теперь кол-во вагонов составляет - #{@train.carriages.size}"
     menu
   rescue RuntimeError, TypeError => e
@@ -183,16 +180,16 @@ attr_accessor :station, :trains, :train, :route, :stations,
     case input
     when 1
       puts "Для создания пассажирского вагона введите номер вагона"
-      number = gets.chomp
+      num = gets.chomp
       puts "Для создания пассажирского вагона введите количество мест"
       seats = gets.chomp
-      @carriage = CarriagePassenger.new(number, seats)
+      @carriage = CarriagePassenger.new(num, seats)
     when 2
       puts "Для создания пассажирского вагона введите номер вагона"
-      number = gets.chomp
+      num = gets.chomp
       puts "Для создания грузового вагона введите объем"
       capacity = gets.chomp
-      @carriage = CarriageCargo.new(number, capacity)
+      @carriage = CarriageCargo.new(num, capacity)
     else puts "Вы ввели неправильный тип вагона"
     menu
     end
@@ -267,40 +264,4 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "Поезд #{train.number} прибыл на станцию #{@train.current_station.name}"
     menu
   end
-
-  def show_carriage(train)
-    train.carriages.each_with_index do |carriage|
-      puts "номер вагона:#{@carriage.number}" 
-    end  
-  end
-
-  def selected_carriage
-    number = gets.chomp
-    index = @carriages.find_index { |carriage| carriage.number == number }
-    index.nil? ? invalid_number && menu : @carriage = @carriages[index]
-  end
-
-  def occupy_carriage    
-    puts "Выберите поезд в котором хотите занять место или объем:"
-    show_trains
-    selected_train
-    puts "Выберите вагон в котором хотите занять место или объем"
-    show_carriage(train)    
-    number = gets.chomp
-    index = selected_train.each_carriage {|carriage| carriage.number == number }
-    carriage = @carriages[index]
-    if carriage.to_a? == CarriageCargo
-      puts "Доступный объем: #{carriage.free_capacity}"
-      puts "Введите сколько вы хотите заполнить:"
-      carriage.load(gets.to_i)
-      puts "Осталось свободного объема: #{carriage.free_capacity}"
-    elsif carriage.to_a? == CarriagePassenger
-      carriage.occupy_seat
-      puts "Вы заняли место."
-      puts "Осталось свободных мест: #{carriage.free_seats}"
-    end
-  rescue RuntimeError => e
-    puts e.message
-    menu  
-  end 
 end

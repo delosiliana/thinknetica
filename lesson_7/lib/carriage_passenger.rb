@@ -1,7 +1,7 @@
 class CarriagePassenger < Carriage
 
-  def initialize(number, seats)
-    @number = number.to_i
+  def initialize(num, seats)
+    @num = num.to_i
     @seats = seats.to_i
     validate!
     @occupied_seats = 0
@@ -17,7 +17,7 @@ class CarriagePassenger < Carriage
   end
 
   def to_s
-    "Номер вагона #{number} тип #{self.class}, занято мест - #{@occupied_seats}, свободных мест - #{free_seats}"
+    "Номер вагона #{num} тип #{self.class}, занято мест - #{@occupied_seats}, свободных мест - #{free_seats}"
   end
 
   protected
