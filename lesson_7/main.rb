@@ -12,7 +12,7 @@ require_relative './lib/carriage_passenger'
 
 class Main
 attr_accessor :station, :trains, :train, :route, :stations,
-                      :number, :name, :carriage, :type
+                      :number, :name, :carriage, :type, :carriages
 
   include Validate
 
@@ -20,6 +20,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
     @stations = []
     @trains = []
     @routes = []
+    @carriages = []
   end
 
   def menu
@@ -39,6 +40,8 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "| 10 - Назначить маршрут поезду                                |"
     puts "| 11 - Переместить поезд по маршруту вперед                    |"
     puts "| 12 - Переместить поезд по маршруту назад                     |"
+    puts "| 13 - Посмотреть данные о поезде                              |"
+    puts "| 14 - Занять место или объем в вагоне                         |"
     puts "| 00 - Выход из меню                                           |"
     puts "|______________________________________________________________|"
     puts"Вы выбираете:"
@@ -69,6 +72,10 @@ attr_accessor :station, :trains, :train, :route, :stations,
         move_forward
       when 12
         move_back
+      when 13
+        info_train
+      when 14
+        occupy_carriage
       when 00
         abort
       else puts "Вы ввели неправильное значение команды, ознакомьтесь еще раз со списком комманд"
@@ -94,13 +101,24 @@ attr_accessor :station, :trains, :train, :route, :stations,
     stations.each { |station| puts station.name } || "Станций пока не существует"
   end
 
+  def show_trains
+    trains.each { |train| puts train.number } || "Поездов пока не существует"
+  end
+
+  def info_train
+    show_trains
+    puts "Выберите поезд информация о котором ваc интересует:"
+    selected_train.each_carriage {|carriage| puts "#{carriage.to_s}"}
+    menu
+  end
+
   def trains_list
     station_list
     puts "Выберите станцию на которой хотите посмотреть поезда:"
     input = gets.chomp.capitalize
-    index = @stations.find_index { |station|  station.name == input }
+    index = @stations.find_index { |station| station.name == input }
     current_station = @stations[index]
-    puts "На станции #{current_station.name} сейчас находится #{current_station.trains.size} поездов"
+    current_station.each_train { |train| puts "Номер: #{@train.number} тип: #{@train.class} количество вагонов: #{@train.carriages.size}"}
     menu
   end
 
@@ -148,7 +166,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
     menu_carriage
     puts "Выберите поезд(по номеру) к которому хотите прицепить вагон:"
     selected_train.add_carriage(carriage)
-    puts "К поезду #{@train.number} успешно прицеплен вагон типа #{@carriage.type}"
+    puts "К поезду #{@train.number} успешно прицеплен вагон типа #{@carriage.class}"
     puts "У поезда #{@train.number} теперь кол-во вагонов составляет - #{@train.carriages.size}"
     menu
   rescue RuntimeError, TypeError => e
@@ -164,13 +182,17 @@ attr_accessor :station, :trains, :train, :route, :stations,
 
     case input
     when 1
+      puts "Для создания пассажирского вагона введите номер вагона"
+      number = gets.chomp
       puts "Для создания пассажирского вагона введите количество мест"
       seats = gets.chomp
-      @carriage = CarriagePassenger.new(seats)
+      @carriage = CarriagePassenger.new(number, seats)
     when 2
+      puts "Для создания пассажирского вагона введите номер вагона"
+      number = gets.chomp
       puts "Для создания грузового вагона введите объем"
       capacity = gets.chomp
-      @carriage = CarriageCargo.new(capacity)
+      @carriage = CarriageCargo.new(number, capacity)
     else puts "Вы ввели неправильный тип вагона"
     menu
     end
@@ -188,11 +210,11 @@ attr_accessor :station, :trains, :train, :route, :stations,
     station_list
     puts "Выберете начальную станцию маршрута из списка:"
     input = gets.chomp.capitalize
-    index = @stations.find_index { |station|  station.name == input }
+    index = @stations.find_index { |station| station.name == input }
     first = @stations[index]
     puts "Выберите конечную станцию маршрута из списка:"
     input = gets.chomp.capitalize
-    index = @stations.find_index { |station|  station.name == input }
+    index = @stations.find_index { |station| station.name == input }
     last = @stations[index]
     @route = Route.new(first, last)
     @routes << @route
@@ -218,7 +240,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
     station_list
     puts "Введите название станции, которую хотите удалить"
     input = gets.chomp.capitalize
-    index = @stations.find_index { |station|  station.name == input }
+    index = @stations.find_index { |station| station.name == input }
     station = @stations[index]
     @route.delete_station(station)
     puts "Станция #{@station} удалена из маршрута #{route.stations}"
@@ -228,7 +250,7 @@ attr_accessor :station, :trains, :train, :route, :stations,
   def to_appoint_route
     puts "Введите номер поезда, к которому хотите присвоить маршрут"
     selected_train.route_train(route)
-    puts "У поезда #{train.number} сейчас маршрут #{route.stations}"
+    puts "У поезда #{train.number} сейчас маршрут #{route.stations.first.name} - #{route.stations.last.name}"
     menu
   end
 
@@ -245,4 +267,40 @@ attr_accessor :station, :trains, :train, :route, :stations,
     puts "Поезд #{train.number} прибыл на станцию #{@train.current_station.name}"
     menu
   end
+
+  def show_carriage(train)
+    train.carriages.each_with_index do |carriage|
+      puts "номер вагона:#{@carriage.number}" 
+    end  
+  end
+
+  def selected_carriage
+    number = gets.chomp
+    index = @carriages.find_index { |carriage| carriage.number == number }
+    index.nil? ? invalid_number && menu : @carriage = @carriages[index]
+  end
+
+  def occupy_carriage    
+    puts "Выберите поезд в котором хотите занять место или объем:"
+    show_trains
+    selected_train
+    puts "Выберите вагон в котором хотите занять место или объем"
+    show_carriage(train)    
+    number = gets.chomp
+    index = selected_train.each_carriage {|carriage| carriage.number == number }
+    carriage = @carriages[index]
+    if carriage.to_a? == CarriageCargo
+      puts "Доступный объем: #{carriage.free_capacity}"
+      puts "Введите сколько вы хотите заполнить:"
+      carriage.load(gets.to_i)
+      puts "Осталось свободного объема: #{carriage.free_capacity}"
+    elsif carriage.to_a? == CarriagePassenger
+      carriage.occupy_seat
+      puts "Вы заняли место."
+      puts "Осталось свободных мест: #{carriage.free_seats}"
+    end
+  rescue RuntimeError => e
+    puts e.message
+    menu  
+  end 
 end

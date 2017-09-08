@@ -39,7 +39,7 @@ class Train
     @speed = 0
   end
 
-  def add_carriage(carriage)   # прицепить(если поезд стоит)
+  def add_carriage(carriage) # прицепить(если поезд стоит)
     stop
     @carriages << carriage
   end
@@ -52,6 +52,7 @@ class Train
   def route_train(route)
     @station_index = 0
     @route = route
+    route.stations.first.add_train self
   end
 
   def move_next
@@ -81,9 +82,7 @@ class Train
   end
 
   def each_carriage
-    @carriages.each do |carriage|
-      yield(carriage)
-    end
+    @carriages.each { |carriage| yield carriage }
   end
 
   protected

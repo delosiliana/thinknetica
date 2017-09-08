@@ -1,7 +1,9 @@
 class CarriageCargo < Carriage
 
-  def initialize(capacity)
+  def initialize(number,capacity)
+    @number = number.to_i
     @capacity = capacity.to_f
+    validate!
     @free_capacity = @capacity
   end
 
@@ -10,12 +12,12 @@ class CarriageCargo < Carriage
     @free_capacity -= capacity
   end
 
-  def occupied_capacity
+  def occupy_capacity
     @capacity - @free_capacity
   end
 
-  def info_puts
-    "Тип - #{self.class}, занятый объём - #{occupied_capacity}, cвободный объем - #{free_capacity}"
+  def to_s
+    "Номер вагона - #{number} тип - #{self.class}, занятый объём - #{occupy_capacity}, cвободный объем - #{@free_capacity}"
   end
 
 protected

@@ -1,10 +1,9 @@
 class Carriage
   include Manufacturer
-  attr_reader :type
+  attr_reader :type, :number
 
-  def initialize(type);
-    @type = type;
+  def initialize(number, type)
+    @type = type
+    @number = number
   end
 end
-
-

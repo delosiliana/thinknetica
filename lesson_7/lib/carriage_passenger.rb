@@ -1,22 +1,23 @@
 class CarriagePassenger < Carriage
 
-  def initialize(seats)
+  def initialize(number, seats)
+    @number = number.to_i
     @seats = seats.to_i
     validate!
-    @occupied_place = @seats
+    @occupied_seats = 0
   end
 
-  def occupied_seat
-    raise "Все места заняты" if @occupied_place.zero?
-    @occupied_place -= 1
+  def occupy_seat
+    raise "Все места заняты" if @occupied_seats == @seats
+    @occupied_seats += 1
   end
 
-  def free_places
-    @seats - @occupied_place
+  def free_seats
+    @seats - @occupied_seats
   end
 
-  def puts_info
-    "тип #{self.class}, занято  мест - #{occupied_place}, свободных мест -#{free_places}"
+  def to_s
+    "Номер вагона #{number} тип #{self.class}, занято мест - #{@occupied_seats}, свободных мест - #{free_seats}"
   end
 
   protected
