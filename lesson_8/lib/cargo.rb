@@ -1,3 +1,1 @@
-class Cargo < Train
-
-end
+class Cargo < Train; end

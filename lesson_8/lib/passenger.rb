@@ -1,3 +1,1 @@
-class Passenger < Train
-
-end
+class Passenger < Train; end

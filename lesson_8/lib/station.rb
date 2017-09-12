@@ -3,10 +3,10 @@ class Station
 
   include Validate
 
-#метод класса
+  # metod class
   @@stations = []
 
-  def initialize(name)  # названия станции
+  def initialize(name)  # name station
     @name = name.to_s
     @trains = []
     validate!
@@ -18,10 +18,10 @@ class Station
   end
 
   def find
-    self.class.all.find{|s| s.name == name}
+    self.class.all.find { |s| s.name == name }
   end
 
-  def add_train(train)  # принимает поезда
+  def add_train(train)  # arrival train station
     @trains << train
   end
 
@@ -29,7 +29,7 @@ class Station
     @trains.group_by(&:type).each { |key, value| print "#{key}: #{value.count} " if key == type }
   end
 
-  def depart_train(train)  # отправить поезд
+  def depart_train(train) # depart train station
     @trains.delete(train)
   end
 
@@ -40,7 +40,7 @@ class Station
   protected
 
   def validate!
-    raise "Название должно быть больше 3 символов" if name.length < 3
-    raise "Такая станция уже существует!" if find
+    raise 'Название должно быть больше 3 символов' if name.length < 3
+    raise 'Такая станция уже существует!' if find
   end
 end

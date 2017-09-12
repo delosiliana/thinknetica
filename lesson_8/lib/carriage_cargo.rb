@@ -1,6 +1,5 @@
 class CarriageCargo < Carriage
-
-  def initialize(num,capacity)
+  def initialize(num, capacity)
     @num = num.to_i
     @capacity = capacity.to_f
     validate!
@@ -8,7 +7,7 @@ class CarriageCargo < Carriage
   end
 
   def load(capacity)
-    raise "Объем вагона не может быть меньше 0" if @free_capacity - capacity < 0
+    raise 'Объем вагона не может быть меньше 0' if @free_capacity - capacity < 0
     @free_capacity -= capacity
   end
 
@@ -20,9 +19,9 @@ class CarriageCargo < Carriage
     "Номер вагона - #{num} тип - #{self.class}, занятый объём - #{occupy_capacity}, cвободный объем - #{@free_capacity}"
   end
 
-protected
+  protected
 
   def validate!
-    raise "Объем вагона не может быть 0 " if @capacity.zero?
+    raise 'Объем вагона не может быть 0 ' if @capacity.zero?
   end
 end

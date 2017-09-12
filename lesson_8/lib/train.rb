@@ -1,6 +1,3 @@
-require_relative 'instance_counter'
-require_relative 'manufacturer'
-
 class Train
   include Validate
   include Manufacturer
@@ -31,7 +28,7 @@ class Train
     Cargo.new(number)
   end
 
-  def accelerate  # может набирать скорость, возвращать текуюую, тормозить.
+  def accelerate # train speed accelerate.
     @speed += 10
   end
 
@@ -39,14 +36,14 @@ class Train
     @speed = 0
   end
 
-  def add_carriage(carriage) # прицепить(если поезд стоит)
+  def add_carriage(carriage) # add carriage if train stopped
     stop
     @carriages << carriage
   end
 
-  def remove_carriage  #отцепить(если поезд стоит)
+  def remove_carriage # remove carriage if train stopped
     stop
-    @carriages.pop || "No more carriages"
+    @carriages.pop || 'No more carriages'
   end
 
   def route_train(route)
@@ -88,7 +85,7 @@ class Train
   protected
 
   def validate!
-    raise "Номер неправильного формата" if number.to_s !~ VALID_NUMBER
+    raise 'Номер неправильного формата' if number.to_s !~ VALID_NUMBER
   end
 
   def first_station?
