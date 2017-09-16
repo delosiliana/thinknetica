@@ -1,0 +1,1 @@
+class Passenger < Train; end

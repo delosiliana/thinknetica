@@ -1,0 +1,1 @@
+class Cargo < Train; end
