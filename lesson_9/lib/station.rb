@@ -1,7 +1,7 @@
 class Station
   attr_accessor :name, :trains
 
-  include Validate
+  include Validation
 
   # metod class
   @@stations = []

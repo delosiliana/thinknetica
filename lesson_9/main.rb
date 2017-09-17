@@ -1,3 +1,4 @@
+require_relative './lib/accessors'
 require_relative './lib/manufacturer'
 require_relative './lib/validation'
 require_relative './lib/instance_counter'
@@ -14,7 +15,7 @@ class Main
   attr_accessor :station, :trains, :train, :route, :stations,
                 :number, :name, :carriage, :type, :carriages, :num
 
-  include Validate
+  include Validation
 
   def initialize
     @stations = []
@@ -115,7 +116,7 @@ class Main
     input = gets.chomp.capitalize
     index = @stations.find_index { |station| station.name == input }
     current_station = @stations[index]
-    current_station.each_train { |_train| puts "Номер:#{@train.number} тип:#{@train.class} вагонов:#{@train.carriages.size}"}
+    current_station.each_train { |_train| puts "Номер:#{@train.number} тип:#{@train.class} вагонов:#{@train.carriages.size}" }
     menu
   end
 
