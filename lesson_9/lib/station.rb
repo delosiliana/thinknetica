@@ -6,6 +6,8 @@ class Station
   # metod class
   @@stations = []
 
+  validate :name, :presence
+
   def initialize(name)  # name station
     @name = name.to_s
     @trains = []
@@ -39,8 +41,8 @@ class Station
 
   protected
 
-  def validate!
-    raise 'Название должно быть больше 3 символов' if name.length < 3
-    raise 'Такая станция уже существует!' if find
-  end
+  # def validate!
+  #  raise 'Название должно быть больше 3 символов' if name.length < 3
+  #  raise 'Такая станция уже существует!' if find
+  # end
 end

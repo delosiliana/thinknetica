@@ -12,11 +12,14 @@ class Train
     @@trains[number]
   end
 
+  validate :number, :presence
+  validate :number, :format, VALID_NUMBER
+
   def initialize(number)
     @number = number
     @carriages = []
-    validate!
     @@trains[number] = self
+    validate!
     stop
   end
 
@@ -83,10 +86,6 @@ class Train
   end
 
   protected
-
-  def validate!
-    raise 'Номер неправильного формата' if number.to_s !~ VALID_NUMBER
-  end
 
   def first_station?
     current_station == @route.stations.first
